@@ -13,10 +13,20 @@ const getFoods = () => {
   const searchBy = document.getElementById("search-by");
   const searcHtml = `Search By: <b>${data.value ? data.value : 'ALL'}</b>`;
   searchBy.innerHTML =  searcHtml;
+  toggleSpinner('block');
   // Get food item using meal db api
   fetchFoods(data.value);
   data.value = '';
   return false;
+}
+
+
+const toggleSpinner = displyHandler => {
+  document.getElementById('spinner').style.display = displyHandler;
+
+  let contentDisplay = displyHandler === 'none' ? 'block' : 'none';
+  document.querySelector(".search-content").style.display =
+    contentDisplay;
 }
 
 
@@ -34,7 +44,10 @@ const fetchFoods = data => {
 }
 
 
-
+/**
+ * TODO:
+ * @ Will work when data not found
+ */
 const dataNotFound = () => {
   const searchBy = document.getElementById('search-by').innerText;
   const notFound = `<div class="food-item text-center">
@@ -43,10 +56,14 @@ const dataNotFound = () => {
                       <p>We couldn't find any results for your search. (${searchBy})</p>
                     </div>`;
   document.getElementById("display-foods").innerHTML = notFound;
+  toggleSpinner("none");
 }
 
 
-
+/**
+ * TODO:
+ * @param {Show all food items beased on search data} data 
+ */
 const displayFoods = data => {
 
   let html = '';
@@ -61,15 +78,18 @@ const displayFoods = data => {
                   </div>
                 </div>
               </div>`;
-    console.log(item);
   }
-
   document.getElementById('display-foods').innerHTML = html;
-
+  toggleSpinner("none");
 }
 
 
+/**
+ * TODO: 
+ * @param {Show Food Deatils information: API Calls} mealId 
+ */
 const foodDetails = mealId => {
+  toggleSpinner("block");
   const detailsUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`;
   fetch(detailsUrl)
   .then(response => response.json())
@@ -78,6 +98,10 @@ const foodDetails = mealId => {
 }
 
 
+/**
+ * TODO: 
+ * @param {Disply Details information based on food id} data 
+ */
 const displayDetails = data => {
   console.log(data);
     let html = "";
@@ -95,9 +119,10 @@ const displayDetails = data => {
                     </div>
                   </div>
                 </div>`;
-      console.log(item);
     }
-
     document.getElementById("display-foods").innerHTML = html;
+    toggleSpinner("none");
 }
+
+// Calls Main Method for show all items
 getFoods();
