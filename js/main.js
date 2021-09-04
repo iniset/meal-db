@@ -20,7 +20,10 @@ const getFoods = () => {
   return false;
 }
 
-
+/**
+ * TODO:
+ * @param {Disply block/none} displyHandler 
+ */
 const toggleSpinner = displyHandler => {
   document.getElementById('spinner').style.display = displyHandler;
 
